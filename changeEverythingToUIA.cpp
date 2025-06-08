@@ -9,6 +9,13 @@
 
 using namespace std;
 
+// Khai báo hàm processWord
+void processWord(const string& word, string& result, 
+                const map<string, string>& cppKeywords,
+                const map<string, string>& specialChars,
+                const map<char, string>& numbers,
+                const map<char, string>& letters);
+
 // Hàm để đọc nội dung file
 string readFile(const string& filename) {
     ifstream file(filename);
@@ -34,6 +41,28 @@ void writeFile(const string& filename, const string& content) {
 string convertToUIA(const string& content) {
     string result = content;
     cout << "\n=== Nội dung gốc ===\n" << result << "\n";
+    
+    // Bỏ qua các dòng #include
+    istringstream iss(result);
+    string line;
+    string processedContent;
+    bool firstLine = true;
+    
+    // Bước 1: Lọc bỏ các dòng #include
+    while (getline(iss, line)) {
+        // Bỏ qua dòng #include
+        if (line.find("#include") != string::npos) {
+            continue;
+        }
+        
+        if (!firstLine) {
+            processedContent += "\n";
+        }
+        processedContent += line;
+        firstLine = false;
+    }
+    
+    result = processedContent;
     
     // Thứ nhất: Các từ khóa C++ và tên function quan trọng
     map<string, string> cppKeywords = {
@@ -146,7 +175,7 @@ string convertToUIA(const string& content) {
     // Map để theo dõi các vị trí đã được chuyển đổi
     map<size_t, bool> converted;
 
-    // Bước 1: Thêm khoảng cách trước và sau ký tự đặc biệt nếu cần
+    // Bước 2: Thêm khoảng cách trước và sau ký tự đặc biệt nếu cần
     // Sắp xếp các ký tự đặc biệt theo độ dài giảm dần để xử lý toán tử kép trước
     vector<pair<string, string>> sortedSpecialChars(specialChars.begin(), specialChars.end());
     sort(sortedSpecialChars.begin(), sortedSpecialChars.end(),
@@ -205,10 +234,11 @@ string convertToUIA(const string& content) {
     }
     cout << "\n=== Sau khi thêm khoảng cách ===\n" << result << "\n";
 
-    // Bước 2: Chuyển đổi từng từ theo thứ tự ưu tiên
+    // Bước 3: Chuyển đổi từng từ theo thứ tự ưu tiên
     string newResult;
-    istringstream iss(result);
-    string line;
+    iss.clear();
+    iss.str(result);
+    firstLine = true;
     
     while (getline(iss, line)) {
         // Xử lý khoảng trắng ở đầu dòng
@@ -220,40 +250,62 @@ string convertToUIA(const string& content) {
         
         // Xử lý phần còn lại của dòng
         string remainingLine = line.substr(spaceCount);
-        istringstream lineStream(remainingLine);
-        string word;
+        bool inQuotes = false;
+        string currentWord;
         bool firstWord = true;
         
-        while (lineStream >> word) {
-            if (!firstWord) {
-                newResult += " ";
-            }
-            firstWord = false;
+        for (size_t i = 0; i < remainingLine.length(); i++) {
+            char c = remainingLine[i];
             
-            // Thứ nhất: Kiểm tra từ khóa C++
-            auto it = cppKeywords.find(word);
-            if (it != cppKeywords.end()) {
-                newResult += it->second;
-            }
-            // Thứ hai: Kiểm tra ký tự đặc biệt và toán tử kép
-            else if (specialChars.find(word) != specialChars.end()) {
-                newResult += specialChars[word];
-            }
-            // Thứ ba và thứ tư: Chuyển đổi từng ký tự trong từ
-            else {
-                for (char c : word) {
-                    if (isdigit(c)) {
-                        newResult += numbers[c];
+            // Xử lý dấu nháy kép
+            if (c == '"') {
+                if (!inQuotes) {
+                    // Bắt đầu chuỗi mới
+                    if (!currentWord.empty()) {
+                        // Xử lý từ đã tích lũy trước đó
+                        if (!firstWord) newResult += " ";
+                        firstWord = false;
+                        processWord(currentWord, newResult, cppKeywords, specialChars, numbers, letters);
+                        currentWord.clear();
                     }
-                    else if (isalpha(c)) {
-                        newResult += letters[c];
-                    }
-                    else {
-                        newResult += c;
-                    }
+                    inQuotes = true;
+                    newResult += '"';
+                } else {
+                    // Kết thúc chuỗi
+                    inQuotes = false;
+                    newResult += '"';
                 }
+                continue;
             }
+            
+            // Nếu đang trong dấu nháy kép, giữ nguyên ký tự
+            if (inQuotes) {
+                newResult += c;
+                continue;
+            }
+            
+            // Xử lý khoảng trắng
+            if (isspace(c)) {
+                if (!currentWord.empty()) {
+                    if (!firstWord) newResult += " ";
+                    firstWord = false;
+                    processWord(currentWord, newResult, cppKeywords, specialChars, numbers, letters);
+                    currentWord.clear();
+                }
+                newResult += c;
+                continue;
+            }
+            
+            // Thêm ký tự vào từ hiện tại
+            currentWord += c;
         }
+        
+        // Xử lý từ cuối cùng nếu còn
+        if (!currentWord.empty()) {
+            if (!firstWord) newResult += " ";
+            processWord(currentWord, newResult, cppKeywords, specialChars, numbers, letters);
+        }
+        
         newResult += "\n";
     }
     
@@ -264,6 +316,53 @@ string convertToUIA(const string& content) {
     
     cout << "\n=== Kết quả cuối cùng ===\n" << newResult << "\n";
     return newResult;
+}
+
+// Hàm phụ trợ để xử lý từ
+void processWord(const string& word, string& result, 
+                const map<string, string>& cppKeywords,
+                const map<string, string>& specialChars,
+                const map<char, string>& numbers,
+                const map<char, string>& letters) {
+    // Kiểm tra nếu là số có nhiều chữ số
+    bool isMultiDigit = true;
+    for (char c : word) {
+        if (!isdigit(c)) {
+            isMultiDigit = false;
+            break;
+        }
+    }
+    if (isMultiDigit && word.length() > 1) {
+        result += word; // Giữ nguyên số có nhiều chữ số
+        return;
+    }
+    
+    // Thứ nhất: Kiểm tra từ khóa C++
+    auto it = cppKeywords.find(word);
+    if (it != cppKeywords.end()) {
+        result += it->second;
+    }
+    // Thứ hai: Kiểm tra ký tự đặc biệt và toán tử kép
+    else {
+        auto it = specialChars.find(word);
+        if (it != specialChars.end()) {
+            result += it->second;
+        }
+        // Thứ ba và thứ tư: Chuyển đổi từng ký tự trong từ
+        else {
+            for (char c : word) {
+                if (isdigit(c)) {
+                    result += numbers.at(c);
+                }
+                else if (isalpha(c)) {
+                    result += letters.at(c);
+                }
+                else {
+                    result += c;
+                }
+            }
+        }
+    }
 }
 
 int main() {
@@ -279,7 +378,7 @@ int main() {
 
     // Giữ nguyên dòng #include "uia.h" nếu có
     string includeLine = "#include \"uia.h\"";
-    bool hasInclude = content.find(includeLine) != string::npos;
+    // bool hasInclude = content.find(includeLine) != string::npos;
     
     // Chuyển đổi nội dung
     string converted = convertToUIA(content);
@@ -289,9 +388,9 @@ int main() {
     
     // Ghi file với #include "uia.h" ở đầu nếu có
     ofstream outFile(outputFile);
-    if (hasInclude) {
+    // if (hasInclude) {
         outFile << includeLine << "\n\n";
-    }
+    // }
     outFile << converted;
     outFile.close();
 
