@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "UIA",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/UiaCompiler"
+            ],
+            "defines": [
+                "UIA_LANGUAGE"
+            ],
+            "compilerPath": "C:/MinGW/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x86",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "forcedInclude": [
+                "${workspaceFolder}/UiaCompiler/uia_library.h"
+            ]
+        }
+    ],
+    "version": 4
+}

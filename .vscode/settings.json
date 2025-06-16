@@ -1,6 +1,30 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "iostream": "cpp"
-    }
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "*.uia": "cpp"
+    },
+    "C_Cpp.files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/UiaCompiler"
+    ],
+    "C_Cpp.default.browse.path": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/UiaCompiler"
+    ],
+    "C_Cpp.default.compilerPath": "g++",
+    "C_Cpp.default.intelliSenseMode": "windows-gcc-x86",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.defines": [
+        "UIA_LANGUAGE"
+    ],
+    "cmake.sourceDirectory": "D:/Lap trinh/UIA/UiaCompiler"
 }
