@@ -9,6 +9,32 @@
 
 using namespace std;
 
+// Hàm để xử lý chuỗi trong dấu nháy kép
+string processStringLiteral(const string& str, const map<char, string>& letters) {
+    string result = "I_u (";
+    bool firstChar = true;
+    
+    for (char c : str) {
+        if (!firstChar) {
+            result += " ";
+        }
+        firstChar = false;
+        
+        if (isalpha(c)) {
+            result += letters.at(c);
+        }
+        else if (c == ' ') {
+            result += "A_a";
+        }
+        else {
+            result += c;
+        }
+    }
+    
+    result += ")";
+    return result;
+}
+
 // Khai báo hàm processWord
 void processWord(const string& word, string& result, 
                 const map<string, string>& cppKeywords,
@@ -179,7 +205,7 @@ string convertToUIA(const string& content) {
     // Sắp xếp các ký tự đặc biệt theo độ dài giảm dần để xử lý toán tử kép trước
     vector<pair<string, string>> sortedSpecialChars(specialChars.begin(), specialChars.end());
     sort(sortedSpecialChars.begin(), sortedSpecialChars.end(),
-         [](const auto& a, const auto& b) { return a.first.length() > b.first.length(); });
+         [](const auto& a1, const auto& b) { return a1.first.length() > b.first.length(); });
 
     for (const auto& specialChar : sortedSpecialChars) {
         size_t pos = 0;
@@ -252,10 +278,11 @@ string convertToUIA(const string& content) {
         string remainingLine = line.substr(spaceCount);
         bool inQuotes = false;
         string currentWord;
+        string quotedString;
         bool firstWord = true;
         
-        for (size_t i = 0; i < remainingLine.length(); i++) {
-            char c = remainingLine[i];
+        for (size_t i1 = 0; i1 < remainingLine.length(); i1++) {
+            char c = remainingLine[i1];
             
             // Xử lý dấu nháy kép
             if (c == '"') {
@@ -269,18 +296,21 @@ string convertToUIA(const string& content) {
                         currentWord.clear();
                     }
                     inQuotes = true;
-                    newResult += '"';
                 } else {
                     // Kết thúc chuỗi
                     inQuotes = false;
-                    newResult += '"';
+                    // Xử lý chuỗi trong dấu nháy kép
+                    if (!firstWord) newResult += " ";
+                    firstWord = false;
+                    newResult += processStringLiteral(quotedString, letters);
+                    quotedString.clear();
                 }
                 continue;
             }
             
-            // Nếu đang trong dấu nháy kép, giữ nguyên ký tự
+            // Nếu đang trong dấu nháy kép, thêm vào chuỗi
             if (inQuotes) {
-                newResult += c;
+                quotedString += c;
                 continue;
             }
             
@@ -378,19 +408,16 @@ int main() {
 
     // Giữ nguyên dòng #include "uia.h" nếu có
     string includeLine = "#include \"uia.h\"";
-    // bool hasInclude = content.find(includeLine) != string::npos;
     
     // Chuyển đổi nội dung
     string converted = convertToUIA(content);
     
     // Tạo tên file output
-    string outputFile = inputFile.substr(0, inputFile.find_last_of('.')) + "_uia.cpp";
+    string outputFile = inputFile.substr(0, inputFile.find_last_of('.')) + ".uia";
     
     // Ghi file với #include "uia.h" ở đầu nếu có
     ofstream outFile(outputFile);
-    // if (hasInclude) {
-        outFile << includeLine << "\n\n";
-    // }
+        // outFile << includeLine << "\n\n";
     outFile << converted;
     outFile.close();
 

@@ -13,7 +13,7 @@ public:
         }
 
         // Tạo tên file tạm
-        std::string tempCppFile = inputFile.substr(0, inputFile.find_last_of(".")) + ".cpp";
+        std::string tempCppFile = inputFile.substr(0, inputFile.find_last_of(".")) + "_tempCppFile.cpp";
         
         // Preprocess file
         if (!UIAPreprocessor::processFile(inputFile, tempCppFile)) {

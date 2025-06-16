@@ -14,6 +14,10 @@
 #define Ia 9
 
 // Macro đặc biệt để chuyển đổi số
+// #define iiii(x) (0 + (x))
+// inline int iiii(int x) { return x; }
+// #define uuuu(a, b) a##b
+// #define iiii(x) uuuu(0, x)
 #define iiii(x) (x)
 
 // Phần 2: Bảng chữ cái viết hoa
