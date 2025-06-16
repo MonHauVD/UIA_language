@@ -14,8 +14,7 @@
 #define Ia 9
 
 // Macro đặc biệt để chuyển đổi số
-#define CONCAT(a, b) ((a) * 10 + (b))
-#define iiii(x) CONCAT(x)
+#define iiii(x) (x)
 
 // Phần 2: Bảng chữ cái viết hoa
 #define Aaa A

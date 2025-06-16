@@ -64,17 +64,13 @@ private:
         while (std::regex_search(result, matches, numberPattern)) {
             std::string content = matches[1];
             std::string processedContent;
-            int number = 0;
             
             // Xử lý từng ký tự trong số
             std::istringstream iss(content);
             std::string token;
             while (iss >> token) {
-                std::string digit = convertTokenToChar(token);
-                number = number * 10 + std::stoi(digit);
+                processedContent += convertTokenToChar(token);
             }
-            
-            processedContent = std::to_string(number);
             
             // Thay thế chuỗi gốc bằng chuỗi đã xử lý
             result = std::regex_replace(result, numberPattern, processedContent, std::regex_constants::format_first_only);
