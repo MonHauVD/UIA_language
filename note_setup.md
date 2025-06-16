@@ -11,3 +11,6 @@ UiaCompiler/UiaRun "test co cach.uia"
 
 - test dấu nháy kép
 UiaCompiler/UiaRun test_xu_ly_dau_nhay_kep.uia
+
+- test con số
+UiaCompiler/UiaRun test_xu_ly_con_so.uia

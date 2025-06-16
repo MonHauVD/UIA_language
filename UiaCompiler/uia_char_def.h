@@ -13,6 +13,10 @@
 #define Ai 8
 #define Ia 9
 
+// Macro đặc biệt để chuyển đổi số
+#define CONCAT(a, b) ((a) * 10 + (b))
+#define iiii(x) CONCAT(x)
+
 // Phần 2: Bảng chữ cái viết hoa
 #define Aaa A
 #define Aau B
@@ -128,7 +132,7 @@
 #define U_ia ::   // Toán tử phạm vi
 
 // Phần 5: Các từ khóa C++ phổ biến
-
+// #define aaaa #includes
 #define Aaaa using
 #define Aaau namespace
 #define Aaai std

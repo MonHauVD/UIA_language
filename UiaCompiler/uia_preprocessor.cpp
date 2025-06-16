@@ -23,6 +23,8 @@ public:
         while (std::getline(inFile, line)) {
             // Xử lý chuỗi ký tự đặc biệt
             line = processStringLiterals(line);
+            // Xử lý số
+            line = processNumbers(line);
             outFile << line << "\n";
         }
         
@@ -52,6 +54,46 @@ private:
         }
         
         return result;
+    }
+
+    static std::string processNumbers(const std::string& line) {
+        std::string result = line;
+        std::regex numberPattern("iiii\\s*\\(([^)]+)\\)");
+        
+        std::smatch matches;
+        while (std::regex_search(result, matches, numberPattern)) {
+            std::string content = matches[1];
+            std::string processedContent;
+            int number = 0;
+            
+            // Xử lý từng ký tự trong số
+            std::istringstream iss(content);
+            std::string token;
+            while (iss >> token) {
+                std::string digit = convertTokenToChar(token);
+                number = number * 10 + std::stoi(digit);
+            }
+            
+            processedContent = std::to_string(number);
+            
+            // Thay thế chuỗi gốc bằng chuỗi đã xử lý
+            result = std::regex_replace(result, numberPattern, processedContent, std::regex_constants::format_first_only);
+        }
+
+        // Xử lý các số đơn lẻ không nằm trong iiii()
+        std::regex singleNumberPattern("\\b(A|I|U|a|u|i|Aa|Au|Ai|Ia)\\b");
+        std::string::const_iterator searchStart(result.cbegin());
+        std::string::const_iterator searchEnd(result.cend());
+        std::string newResult;
+        
+        while (std::regex_search(searchStart, searchEnd, matches, singleNumberPattern)) {
+            newResult += result.substr(searchStart - result.cbegin(), matches.position());
+            newResult += convertTokenToChar(matches.str());
+            searchStart = matches.suffix().first;
+        }
+        newResult += result.substr(searchStart - result.cbegin());
+        
+        return newResult;
     }
 
     static std::string convertTokenToChar(const std::string& token) {
