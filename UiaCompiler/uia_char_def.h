@@ -77,7 +77,7 @@
 #define A_I ,      // Dấu phẩy
 #define A_U ;      // Dấu chấm phẩy
 #define I_a :      // Dấu hai chấm
-// #define I_u "\""
+#define I_u(x) #x  // Dấu nháy kép
 #define I_i \     // Dấu ngoặc đơn
 #define I_A {      // Dấu ngoặc nhọn mở
 #define I_I }      // Dấu ngoặc nhọn đóng

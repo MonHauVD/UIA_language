@@ -1,3 +1,4 @@
+cd UiaCompiler
 g++ -o uia_compiler uia_main.cpp uia_preprocessor.cpp uia_compiler.cpp
 
 g++ UiaCompiler/uia_run.cpp -o UiaRun

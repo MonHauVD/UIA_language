@@ -1,0 +1,3 @@
+D:/Lap trinh/UIA/build/CMakeFiles/uia_compiler.dir
+D:/Lap trinh/UIA/build/CMakeFiles/edit_cache.dir
+D:/Lap trinh/UIA/build/CMakeFiles/rebuild_cache.dir

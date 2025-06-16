@@ -7,7 +7,22 @@
                 "${workspaceFolder}/UiaCompiler"
             ],
             "defines": [
-                "UIA_LANGUAGE"
+                "UIA_LANGUAGE",
+                "Aaaa=using",
+                "Aaau=namespace",
+                "Aaai=std",
+                "Aaua=int",
+                "Aauu=void",
+                "Aaui=return",
+                "Aaia=if",
+                "Aaiu=else",
+                "Aaii=for",
+                "Aa_a=while",
+                "Aa_u=do",
+                "Aa_i=switch",
+                "Aa_A=case",
+                "Aa_I=break",
+                "Aa_U=continue"
             ],
             "compilerPath": "C:/MinGW/bin/g++.exe",
             "cStandard": "c17",
@@ -15,7 +30,8 @@
             "intelliSenseMode": "windows-gcc-x86",
             "configurationProvider": "ms-vscode.cmake-tools",
             "forcedInclude": [
-                "${workspaceFolder}/UiaCompiler/uia_library.h"
+                "${workspaceFolder}/UiaCompiler/uia_library.h",
+                "${workspaceFolder}/UiaCompiler/uia_char_def.h"
             ]
         }
     ],

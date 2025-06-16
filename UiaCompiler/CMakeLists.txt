@@ -3,12 +3,16 @@ project(UIACompiler)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Thêm đường dẫn tới thư mục nguồn
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(uia_compiler
-    uia_main.cpp
-    uia_preprocessor.cpp
-    uia_compiler.cpp
+# Liệt kê các file nguồn
+set(SOURCES
+    ${SOURCE_DIR}/uia_main.cpp
+    ${SOURCE_DIR}/uia_preprocessor.cpp
+    ${SOURCE_DIR}/uia_compiler.cpp
 )
+add_executable(uia_compiler ${SOURCES})
 
 target_include_directories(uia_compiler PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 

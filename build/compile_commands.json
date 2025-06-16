@@ -1,0 +1,20 @@
+[
+{
+  "directory": "D:/Lap trinh/UIA/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -DUIA_LANGUAGE @CMakeFiles/uia_compiler.dir/includes_CXX.rsp -g -std=gnu++1z \"-includeD:/Lap trinh/UIA/UiaCompiler/uia_library.h\" -o CMakeFiles\\uia_compiler.dir\\uia_main.cpp.obj -c \"D:\\Lap trinh\\UIA\\UiaCompiler\\uia_main.cpp\"",
+  "file": "D:/Lap trinh/UIA/UiaCompiler/uia_main.cpp",
+  "output": "CMakeFiles/uia_compiler.dir/uia_main.cpp.obj"
+},
+{
+  "directory": "D:/Lap trinh/UIA/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -DUIA_LANGUAGE @CMakeFiles/uia_compiler.dir/includes_CXX.rsp -g -std=gnu++1z \"-includeD:/Lap trinh/UIA/UiaCompiler/uia_library.h\" -o CMakeFiles\\uia_compiler.dir\\uia_preprocessor.cpp.obj -c \"D:\\Lap trinh\\UIA\\UiaCompiler\\uia_preprocessor.cpp\"",
+  "file": "D:/Lap trinh/UIA/UiaCompiler/uia_preprocessor.cpp",
+  "output": "CMakeFiles/uia_compiler.dir/uia_preprocessor.cpp.obj"
+},
+{
+  "directory": "D:/Lap trinh/UIA/build",
+  "command": "C:\\MinGW\\bin\\g++.exe -DUIA_LANGUAGE @CMakeFiles/uia_compiler.dir/includes_CXX.rsp -g -std=gnu++1z \"-includeD:/Lap trinh/UIA/UiaCompiler/uia_library.h\" -o CMakeFiles\\uia_compiler.dir\\uia_compiler.cpp.obj -c \"D:\\Lap trinh\\UIA\\UiaCompiler\\uia_compiler.cpp\"",
+  "file": "D:/Lap trinh/UIA/UiaCompiler/uia_compiler.cpp",
+  "output": "CMakeFiles/uia_compiler.dir/uia_compiler.cpp.obj"
+}
+]
